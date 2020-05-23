@@ -10,24 +10,28 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Tank {
     private Vector2 position;
-    private Vector2 tmp;
+    //private Vector2 tmp;
     private TextureRegion[] textures;
+    private TextureAtlas atlas;
     private float angle;
     private float speed;
 
     private float moveTimer;
     private float timePerFrame;
+    private Projectile projectile;
 
-    public Vector2 getPosition() {
-        return position;
-    }
+//    public Vector2 getPosition() {
+//        return position;
+//    }
 
     public Tank(TextureAtlas atlas, float x, float y) {
         this.position = new Vector2(x, y);
-        this.tmp = new Vector2(0, 0);
+        //this.tmp = new Vector2(0, 0);
+        this.atlas = atlas;
         this.textures = new TextureRegion(atlas.findRegion("tankanim")).split(64, 64)[0];
         this.speed = 140.0f;
         this.timePerFrame = 0.08f;
+        this.projectile = new Projectile(atlas);
     }
 
     private int getCurrentFrameIndex() {
@@ -49,9 +53,8 @@ public class Tank {
                 moveTimer += dt;
             }
         }
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
-
+            fire();
         }
         checkBounds();
     }
@@ -73,5 +76,15 @@ public class Tank {
 
     public void render(SpriteBatch batch) {
         batch.draw(textures[getCurrentFrameIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
+    }
+
+    public void fire(){
+        if (!projectile.getInit()){
+            projectile.setup(position, angle);
+        }
+    }
+
+    public Projectile getProjectile() {
+        return this.projectile;
     }
 }
