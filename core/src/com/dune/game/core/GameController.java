@@ -30,6 +30,7 @@ public class GameController {
 
     public void update(float dt) {
         tank.update(dt);
+        map.flowerCheck(tank.getPosition());
         projectilesController.update(dt);
         checkCollisions(dt);
     }
