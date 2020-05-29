@@ -144,11 +144,7 @@ public class Tank extends GameObject implements Poolable {
         }
     }
 
-    public void setSelected (){
-        selected = true;
-    }
-
-    public void setNotSelected (){
-        selected = false;
+    public void setSelected (boolean param){
+        selected = param;
     }
 }

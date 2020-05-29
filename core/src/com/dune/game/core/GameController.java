@@ -1,14 +1,12 @@
 package com.dune.game.core;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 public class GameController {
     private BattleMap map;
     private ProjectilesController projectilesController;
     private TanksController tanksController;
-    private Vector2 CO;
+    private PlayerControl control;
 
     public TanksController getTanksController() {
         return tanksController;
@@ -30,15 +28,15 @@ public class GameController {
         this.tanksController = new TanksController(this);
         this.tanksController.setup(200, 200, Tank.Owner.PLAYER);
         this.tanksController.setup(400, 400, Tank.Owner.PLAYER);
-        CO = new Vector2();
+        this.control = new PlayerControl(this);
     }
 
     public void update(float dt) {
-        switchSelected();
         tanksController.update(dt);
         projectilesController.update(dt);
         map.update(dt);
         checkCollisions(dt);
+        control.controlListener();
     }
 
     public void checkCollisions(float dt) {
@@ -53,15 +51,15 @@ public class GameController {
         }
     }
 
-    public void switchSelected(){
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            CO.set(Gdx.input.getX(), 720 - Gdx.input.getY());
-            for (int i = tanksController.activeList.size()-1; i >= 0; i--) {
-                if(checkCoordinates(CO,tanksController.activeList.get(i).getPosition(),35)){
-                    tanksController.activeList.get(i).setSelected();
-                }else{
-                    tanksController.activeList.get(i).setNotSelected();
-                }
+    public void switchSelected(Vector2 startPos, Vector2 endPos){
+        for (int i = tanksController.activeList.size()-1; i >= 0; i--) {
+            if(tanksController.activeList.get(i).getPosition().x > startPos.x - 40
+                    && tanksController.activeList.get(i).getPosition().x < endPos.x + 40
+                    && tanksController.activeList.get(i).getPosition().y > startPos.y - 40
+                    && tanksController.activeList.get(i).getPosition().y < endPos.y + 40){
+                tanksController.activeList.get(i).setSelected(true);
+            }else{
+                tanksController.activeList.get(i).setSelected(false);
             }
         }
     }
