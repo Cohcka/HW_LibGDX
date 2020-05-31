@@ -2,10 +2,9 @@ package com.dune.game.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Tank extends GameObject implements Poolable {
@@ -16,6 +15,7 @@ public class Tank extends GameObject implements Poolable {
     private Owner ownerType;
     private Weapon weapon;
     private Vector2 destination;
+    private Vector2 tmp2;
     private TextureRegion[] textures;
     private TextureRegion progressbarTexture;
     private int hp;
@@ -26,6 +26,8 @@ public class Tank extends GameObject implements Poolable {
     private float moveTimer;
     private float timePerFrame;
     private int container;
+    private BitmapFont font12;
+    private boolean selected;
 
     @Override
     public boolean isActive() {
@@ -37,6 +39,9 @@ public class Tank extends GameObject implements Poolable {
         this.progressbarTexture = Assets.getInstance().getAtlas().findRegion("progressbar");
         this.timePerFrame = 0.08f;
         this.rotationSpeed = 90.0f;
+        this.font12 = Assets.getInstance().getAssetManager().get("fonts/font12.ttf");
+        this.tmp2 = new Vector2();
+        this.selected = false;
     }
 
     public void setup(Owner ownerType, float x, float y) {
@@ -54,8 +59,11 @@ public class Tank extends GameObject implements Poolable {
     }
 
     public void update(float dt) {
-        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
+        tmp2.set(position);
+        if(selected) {
+            if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
+            }
         }
         if (position.dst(destination) > 3.0f) {
             float angleTo = tmp.set(destination).sub(position).angle();
@@ -92,8 +100,12 @@ public class Tank extends GameObject implements Poolable {
         checkBounds();
     }
 
+    public void blockMove(){
+        position.set(tmp2);
+    }
+
     public void updateWeapon(float dt) {
-        if (weapon.getType() == Weapon.Type.HARVEST) {
+        if (weapon.getType() == Weapon.Type.HARVEST && container < 50) {
             if (gc.getMap().getResourceCount(this) > 0) {
                 int result = weapon.use(dt);
                 if (result > -1) {
@@ -122,6 +134,7 @@ public class Tank extends GameObject implements Poolable {
 
     public void render(SpriteBatch batch) {
         batch.draw(textures[getCurrentFrameIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
+        font12.draw(batch, container + "", position.x + 50, position.y - 20, 1, 1, false);
         if (weapon.getType() == Weapon.Type.HARVEST && weapon.getUsageTimePercentage() > 0.0f) {
             batch.setColor(0.2f, 0.2f, 0.0f, 1.0f);
             batch.draw(progressbarTexture, position.x - 32, position.y + 30, 64, 12);
@@ -129,5 +142,9 @@ public class Tank extends GameObject implements Poolable {
             batch.draw(progressbarTexture, position.x - 30, position.y + 32, 60 * weapon.getUsageTimePercentage(), 8);
             batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
+    }
+
+    public void setSelected (boolean param){
+        selected = param;
     }
 }
