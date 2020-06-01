@@ -121,6 +121,9 @@ public class Tank extends GameObject implements Poolable {
     }
 
     public void updateWeapon(float dt) {
+        if(target != null && !target.isActive()){
+            target = null;
+        }
         if (weapon.getType() == Weapon.Type.GROUND && target != null) {
             float angleTo = tmp.set(target.position).sub(position).angle();
             weapon.setAngle(rotateTo(weapon.getAngle(), angleTo, 180.0f, dt));
