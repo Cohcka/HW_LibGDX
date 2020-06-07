@@ -76,7 +76,19 @@ public class BattleMap {
     public int getResourceCount(Vector2 point) {
         int cx = (int) (point.x / CELL_SIZE);
         int cy = (int) (point.y / CELL_SIZE);
-        return cells[cx][cy].resource;
+        if(cx < 0 || cx > 16 || cy < 0 || cy > 9){
+            return 0;
+        } else {
+            return cells[cx][cy].resource;
+        }
+    }
+
+    public int getResourceCount(int cx, int cy) {
+        if(cx < 0 || cx > 16 || cy < 0 || cy > 9){
+            return 0;
+        } else {
+            return cells[cx][cy].resource;
+        }
     }
 
     public int harvestResource(Vector2 point, int power) {
