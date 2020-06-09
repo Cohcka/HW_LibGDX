@@ -3,8 +3,6 @@ package com.dune.game.core;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.dune.game.core.buildings.BuildingsController;
-import com.dune.game.core.buildings.Platform;
 import com.dune.game.core.units.AbstractUnit;
 import com.dune.game.core.units.Owner;
 
@@ -66,6 +64,7 @@ public class UnitsController {
         buildingsController.update(dt);
         battleTanksController.update(dt);
         harvestersController.update(dt);
+        buildingsController.update(dt);
         units.clear();
         aiUnits.clear();
         playerUnits.clear();
@@ -82,6 +81,7 @@ public class UnitsController {
     }
 
     public void render(SpriteBatch batch) {
+        buildingsController.render(batch);
         battleTanksController.render(batch);
         harvestersController.render(batch);
     }

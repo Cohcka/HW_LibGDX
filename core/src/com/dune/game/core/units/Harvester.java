@@ -59,11 +59,11 @@ public class Harvester extends AbstractUnit {
         }
     }
 
-    public int dropResource(int res) {
-        if (container >= res) {
-            container -= res;
-            return res;
+    public boolean dropResource() {
+        if (container > 0) {
+            container -= 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 }

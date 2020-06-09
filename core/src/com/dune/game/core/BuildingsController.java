@@ -1,7 +1,8 @@
-package com.dune.game.core.buildings;
+package com.dune.game.core;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.dune.game.core.GameController;
+import com.dune.game.core.buildings.Platform;
 import com.dune.game.core.units.AbstractUnit;
 import com.dune.game.core.units.Harvester;
 import com.dune.game.core.units.Owner;
@@ -19,8 +20,8 @@ public class BuildingsController {
     public BuildingsController(GameController gc){
         this.gc = gc;
         platforms = new Platform[2];
-        platforms[0] = new Platform(gc, Owner.AI, MathUtils.random(0*80, 16*80) + 40, MathUtils.random(0*80, 12*80) + 40);
-        platforms[1] = new Platform(gc, Owner.PLAYER, MathUtils.random(0*80, 16*80) + 40, MathUtils.random(0*80, 12*80) + 40);
+        platforms[0] = new Platform(gc, Owner.AI, 1, 4);
+        platforms[1] = new Platform(gc, Owner.PLAYER,5,5);
     }
 
     public void update(float dt) {
@@ -46,6 +47,12 @@ public class BuildingsController {
                 }
 
             }
+        }
+    }
+
+    public void render(SpriteBatch batch){
+        for (int i = 0; i < platforms.length; i++) {
+            platforms[i].render(batch);
         }
     }
 }
