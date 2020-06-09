@@ -3,8 +3,9 @@ package com.dune.game.core;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.dune.game.core.buildings.BuildingsController;
+import com.dune.game.core.buildings.Platform;
 import com.dune.game.core.units.AbstractUnit;
-import com.dune.game.core.units.BattleTank;
 import com.dune.game.core.units.Owner;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class UnitsController {
     private GameController gc;
     private BattleTanksController battleTanksController;
     private HarvestersController harvestersController;
+    private BuildingsController buildingsController;
     private List<AbstractUnit> units;
     private List<AbstractUnit> playerUnits;
     private List<AbstractUnit> aiUnits;
@@ -49,6 +51,7 @@ public class UnitsController {
         for (int i = 0; i < 2; i++) {
             createHarvester(Owner.AI, MathUtils.random(80, 1200), MathUtils.random(80, 640));
         }
+        this.buildingsController = new BuildingsController(gc);
     }
 
     public void createBattleTank(Owner owner, float x, float y) {
@@ -60,6 +63,7 @@ public class UnitsController {
     }
 
     public void update(float dt) {
+        buildingsController.update(dt);
         battleTanksController.update(dt);
         harvestersController.update(dt);
         units.clear();
