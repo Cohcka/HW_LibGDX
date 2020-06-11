@@ -1,39 +1,19 @@
-package com.dune.game.core;
+package com.dune.game.core.users_logic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.dune.game.core.GameController;
 import com.dune.game.core.units.AbstractUnit;
-import com.dune.game.core.units.BattleTank;
-import com.dune.game.core.units.Owner;
-import com.dune.game.core.units.UnitType;
+import com.dune.game.core.units.types.Owner;
+import com.dune.game.core.units.types.UnitType;
 
-public class PlayerLogic {
-    private GameController gc;
-    private int money;
-    private int unitsCount;
-    private int unitsMaxCount;
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void addMoney(int money){
-        this.money += money;
-    }
-
-    public int getUnitsCount() {
-        return unitsCount;
-    }
-
-    public int getUnitsMaxCount() {
-        return unitsMaxCount;
-    }
-
+public class PlayerLogic extends BaseLogic {
     public PlayerLogic(GameController gc) {
         this.gc = gc;
         this.money = 1000;
         this.unitsCount = 10;
         this.unitsMaxCount = 100;
+        this.ownerType = Owner.PLAYER;
     }
 
     public void update(float dt) {
