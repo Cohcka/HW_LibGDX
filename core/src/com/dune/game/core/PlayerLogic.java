@@ -17,6 +17,10 @@ public class PlayerLogic {
         return money;
     }
 
+    public void addMoney(int money){
+        this.money += money;
+    }
+
     public int getUnitsCount() {
         return unitsCount;
     }

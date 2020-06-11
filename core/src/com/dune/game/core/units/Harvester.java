@@ -58,4 +58,12 @@ public class Harvester extends AbstractUnit {
             batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
+
+    public boolean dropResource() {
+        if (container > 0) {
+            container -= 1;
+            return true;
+        }
+        return false;
+    }
 }
