@@ -48,6 +48,14 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
         return baseLogic;
     }
 
+    public int getContainer(){
+        return container;
+    }
+
+    public int getContainerCapacity(){
+        return containerCapacity;
+    }
+
     public boolean takeDamage(int damage) {
         if (!isActive()) {
             return false;
